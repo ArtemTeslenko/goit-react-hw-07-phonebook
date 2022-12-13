@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
-import { nanoid } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+// import { addContact } from 'redux/contactsSlice';
+// import { nanoid } from '@reduxjs/toolkit';
+import { getContacts } from 'redux/selectors';
 import {
   FormInput,
   Form,
@@ -12,21 +13,21 @@ import {
 function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const contacts = useSelector(state => state.contacts.items);
-  const dispatch = useDispatch();
+  const { items } = useSelector(getContacts);
+  // const dispatch = useDispatch();
 
   const handleSubmit = e => {
     e.preventDefault();
-    const id = nanoid();
+    // const id = nanoid();
 
-    if (contacts.length > 0 && contacts.find(item => item.name === name)) {
+    if (items.length > 0 && items.find(item => item.name === name)) {
       alert('The contact is already in your phonebook.');
       setName('');
       setNumber('');
       return;
     }
 
-    dispatch(addContact({ id, name, number }));
+    // dispatch(addContact({ id, name, number }));
 
     setName('');
     setNumber('');
