@@ -10,7 +10,7 @@ export const ContactItem = styled.li`
 
 export const ContactItemWrapper = styled.div`
   display: flex;
-  max-width: 280px;
+  max-width: 350px;
   justify-content: space-between;
 `;
 

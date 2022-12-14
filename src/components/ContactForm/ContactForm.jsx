@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // import { addContact } from 'redux/contactsSlice';
 // import { nanoid } from '@reduxjs/toolkit';
 import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
 import {
   FormInput,
   Form,
@@ -12,25 +13,27 @@ import {
 
 function ContactForm() {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
   const { items } = useSelector(getContacts);
+  const dispatch = useDispatch();
   // const dispatch = useDispatch();
 
   const handleSubmit = e => {
     e.preventDefault();
-    // const id = nanoid();
 
     if (items.length > 0 && items.find(item => item.name === name)) {
       alert('The contact is already in your phonebook.');
       setName('');
-      setNumber('');
+      setPhone('');
       return;
     }
-
+    // const id = nanoid();
+    // const createdAt = new Date();
+    dispatch(addContact({ name, phone }));
     // dispatch(addContact({ id, name, number }));
 
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -52,8 +55,8 @@ function ContactForm() {
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         required
-        value={number}
-        onChange={e => setNumber(e.target.value)}
+        value={phone}
+        onChange={e => setPhone(e.target.value)}
       />
       <AddContactBtn type="submit">Add contact</AddContactBtn>
     </Form>

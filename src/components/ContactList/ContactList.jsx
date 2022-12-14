@@ -29,11 +29,11 @@ export default function ContactList() {
           ? items
               .filter(item => item.name.toLowerCase().includes(filteredValue))
               .map(item => {
-                const { id, name, number } = item;
+                const { id, name, phone } = item;
                 return (
                   <ContactItem key={id}>
                     <ContactItemWrapper>
-                      {name}: {number}
+                      {name}: {phone}
                       <DeleteBtn
                         type="button"
                         // onClick={() => dispatch(removeContact(id))}
