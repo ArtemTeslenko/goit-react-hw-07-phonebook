@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { addContact } from 'redux/contactsSlice';
-// import { nanoid } from '@reduxjs/toolkit';
 import { getContacts } from 'redux/selectors';
 import { addContact } from 'redux/operations';
 import {
@@ -16,7 +14,6 @@ function ContactForm() {
   const [phone, setPhone] = useState('');
   const { items } = useSelector(getContacts);
   const dispatch = useDispatch();
-  // const dispatch = useDispatch();
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -27,10 +24,8 @@ function ContactForm() {
       setPhone('');
       return;
     }
-    // const id = nanoid();
-    // const createdAt = new Date();
+
     dispatch(addContact({ name, phone }));
-    // dispatch(addContact({ id, name, number }));
 
     setName('');
     setPhone('');

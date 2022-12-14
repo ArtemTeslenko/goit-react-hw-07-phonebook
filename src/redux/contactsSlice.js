@@ -1,31 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchContacts, addContact } from './operations';
-// import storage from 'redux-persist/lib/storage';
-// import { persistReducer } from 'redux-persist';
+import { fetchContacts, addContact, deleteContact } from './operations';
 
 export const contactsSlice = createSlice({
   name: 'contacts',
   initialState: { items: [], isLoading: false, error: null },
-  reducers: {
-    // addContact: (state, action) => {
-    //   state.items.push(action.payload);
-    // },
-    // removeContact: (state, action) => {
-    //   state.items = state.items.filter(({ id }) => id !== action.payload);
-    // },
-    // fetchingInProgress(state) {
-    //   state.isLoading = true;
-    // },
-    // fetchingSuccess(state, action) {
-    //   state.isLoading = false;
-    //   state.error = null;
-    //   state.items = action.payload;
-    // },
-    // fetchingError(state, action) {
-    //   state.isLoading = false;
-    //   state.error = action.payload;
-    // },
-  },
+
   extraReducers: {
     [fetchContacts.pending](state, _) {
       state.isLoading = true;
@@ -51,20 +30,23 @@ export const contactsSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    [deleteContact.pending](state) {
+      state.isLoading = true;
+    },
+    [deleteContact.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const index = state.items.findIndex(
+        contact => contact.id === action.payload.id
+      );
+      state.items.splice(index, 1);
+    },
+    [deleteContact.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
 export const { fetchingInProgress, fetchingSuccess, fetchingError } =
   contactsSlice.actions;
-
-// export const { addContact, removeContact } = contactsSlice.actions;
-
-// const persistConfig = {
-//   key: 'contacts',
-//   storage,
-// };
-
-// export const persistedContactsReducer = persistReducer(
-//   persistConfig,
-//   contactsSlice.reducer
-// );
