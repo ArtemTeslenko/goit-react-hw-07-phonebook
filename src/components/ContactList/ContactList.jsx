@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
 import { fetchContacts, deleteContact } from 'redux/operations';
-import { getContacts } from 'redux/selectors';
+import { selectContacts, selectError, selectIsLoading } from 'redux/selectors';
 import {
   ContactItem,
   ContactItemWrapper,
@@ -10,9 +10,10 @@ import {
 } from './ContactList.styled';
 
 export default function ContactList() {
-  const filteredValue = useSelector(state => state.filter);
   const dispatch = useDispatch();
-  const { items, isLoading, error } = useSelector(getContacts);
+  const items = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -24,24 +25,22 @@ export default function ContactList() {
       {error && <p>{error}</p>}
       <List>
         {items.length > 0
-          ? items
-              .filter(item => item.name.toLowerCase().includes(filteredValue))
-              .map(item => {
-                const { id, name, phone } = item;
-                return (
-                  <ContactItem key={id}>
-                    <ContactItemWrapper>
-                      {name}: {phone}
-                      <DeleteBtn
-                        type="button"
-                        onClick={() => dispatch(deleteContact(id))}
-                      >
-                        Delete
-                      </DeleteBtn>
-                    </ContactItemWrapper>
-                  </ContactItem>
-                );
-              })
+          ? items.map(item => {
+              const { id, name, phone } = item;
+              return (
+                <ContactItem key={id}>
+                  <ContactItemWrapper>
+                    {name}: {phone}
+                    <DeleteBtn
+                      type="button"
+                      onClick={() => dispatch(deleteContact(id))}
+                    >
+                      Delete
+                    </DeleteBtn>
+                  </ContactItemWrapper>
+                </ContactItem>
+              );
+            })
           : null}
       </List>
     </>
